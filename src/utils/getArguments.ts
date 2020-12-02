@@ -65,4 +65,4 @@ const getArguments = (argv: string[]): UserArguments => {
   return userArguments;
 };
 
-export { getArguments };
+export { getArguments, UserArguments };

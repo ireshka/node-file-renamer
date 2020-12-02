@@ -71,11 +71,12 @@ module.exports = {
       },
     ],
     /**
-     * Various rules
+     * Various rules - project
      */
     'no-console': 'off',
     'import/prefer-default-export': 'off',
     'node/no-unsupported-features/es-syntax': ['error', { ignores: ['modules'] }],
+    'unicorn/no-process-exit': off,
   },
   settings: {
     node: {
