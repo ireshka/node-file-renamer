@@ -23,17 +23,17 @@
   "author": "ireshka",
   "license": "MIT",
   "dependencies": {
-    "@types/minimist": "^1.2.1",
     "dotenv": "^8.2.0",
     "eslint-config-airbnb-typescript": "^12.0.0",
-    "minimist": "^1.2.5",
     "rimraf": "^3.0.2",
-    "ts-node": "^9.0.0"
+    "ts-node": "^9.0.0",
+    "yargs": "^16.1.1"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9",
     "@types/jest": "^26.0.15",
     "@types/node": "^14.14.6",
+    "@types/yargs": "^15.0.10",
     "@typescript-eslint/eslint-plugin": "^4.9.0",
     "@typescript-eslint/parser": "^4.9.0",
     "babel-eslint": "^10.1.0",
