@@ -1,0 +1,61 @@
+{
+  "name": "node-file-renamer",
+  "version": "1.0.0",
+  "description": "Simple node cli batch renamer wrote in typescript",
+  "main": "./src/index.js",
+  "engines": {
+    "node": ">=12.13.0"
+  },
+  "scripts": {
+    "start": "npm run build && node ./dist/index.js",
+    "start:dev": "nodemon",
+    "build": "rimraf ./dist && tsc",
+    "check:eslint:deprecated": "eslint-find-rules --deprecated -no-error .eslintrc.js",
+    "check:eslint:unused": "eslint-find-rules --unused -no-error .eslintrc.js",
+    "test": "jest",
+    "version": "babel --version"
+  },
+  "keywords": [
+    "node",
+    "renamer",
+    "typescript"
+  ],
+  "author": "ireshka",
+  "license": "MIT",
+  "dependencies": {
+    "@types/minimist": "^1.2.1",
+    "dotenv": "^8.2.0",
+    "eslint-config-airbnb-typescript": "^12.0.0",
+    "minimist": "^1.2.5",
+    "rimraf": "^3.0.2",
+    "ts-node": "^9.0.0"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.12.9",
+    "@types/jest": "^26.0.15",
+    "@types/node": "^14.14.6",
+    "@typescript-eslint/eslint-plugin": "^4.9.0",
+    "@typescript-eslint/parser": "^4.9.0",
+    "babel-eslint": "^10.1.0",
+    "eslint": "^7.14.0",
+    "eslint-config-airbnb-base": "^14.2.1",
+    "eslint-config-prettier": "^6.15.0",
+    "eslint-find-rules": "^3.6.1",
+    "eslint-plugin-import": "^2.22.1",
+    "eslint-plugin-jest": "^24.1.3",
+    "eslint-plugin-jest-dom": "^3.4.0",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-prettier": "^3.1.4",
+    "eslint-plugin-promise": "^4.2.1",
+    "eslint-plugin-sort-keys-fix": "^1.1.1",
+    "eslint-plugin-typescript-sort-keys": "^1.5.0",
+    "eslint-plugin-unicorn": "^23.0.0",
+    "husky": "^4.3.0",
+    "jest": "^26.6.2",
+    "lint-staged": "^10.5.1",
+    "nodemon": "^2.0.6",
+    "prettier": "^2.1.2",
+    "ts-jest": "^26.4.4",
+    "typescript": "^4.1.2"
+  }
+}

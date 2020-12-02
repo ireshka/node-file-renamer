@@ -1,0 +1,46 @@
+{
+  "compilerOptions": {
+    /* Basic options */
+    "target": "es5",
+    "module": "commonjs",
+    "lib": ["DOM", "ES2015"],
+    "outDir": "./dist",
+    "rootDir": "./src",
+    "removeComments": true,
+    // "listFiles": true,
+    "listEmittedFiles": true,
+    "pretty": true,
+
+    /* Strict Type-Checking Options */
+    "strict": true,
+
+    /* Additional Checks */
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true,
+
+    /* Advanced Options */
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "noEmitOnError": true,
+    "declaration": false,
+
+    /* Module Resolution Options */
+    "typeRoots": ["node_modules/@types", "@types"],
+    "esModuleInterop": true
+
+    /**
+     * @info Diagnostic options
+     */
+    // "diagnostics": true,
+    // "traceResolution": true,
+
+
+    /**
+     * @info For JS / TS projects
+     */
+    // "allowJs": true,                       /* Allow javascript files to be compiled. */
+    // "checkJs": true,                       /* Report errors in .js files. */
+  }
+}
