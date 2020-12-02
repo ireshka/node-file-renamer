@@ -28,7 +28,7 @@
 
     /* Module Resolution Options */
     "typeRoots": ["node_modules/@types", "@types"],
-    "esModuleInterop": true
+    "esModuleInterop": true,
 
     /**
      * @info Diagnostic options
