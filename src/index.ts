@@ -1,5 +1,11 @@
-const add = (a: number, b: number): number => a + b;
+import { getArguments } from './utils/getArguments';
 
-console.log(add(5, 10));
+try {
+  const { argv } = process;
+  const providedRenameOptions = getArguments(argv);
 
-export { add };
+  console.log(providedRenameOptions);
+} catch (error) {
+  console.log('Error here:');
+  console.log(error);
+}
