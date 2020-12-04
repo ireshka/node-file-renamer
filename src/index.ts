@@ -4,18 +4,10 @@ import { doesExist } from './utils/doesExist';
 import { getMatchingFiles } from './utils/getMatchingFiles';
 import { createFullDirPath } from './utils/createFullDirPath';
 
-// const isError = (element: string | string[] | Error): boolean => {
-//   if (element instanceof Error) {
-//     return true;
-//   }
-//   return false;
-// };
-
 const init = async () => {
   try {
     const { argv } = process;
     const { userDir, ext, sourcePath, pattern } = getArguments(argv);
-    console.log(typeof ext);
     console.log(ext, pattern);
     const fullDirPath = createFullDirPath(sourcePath, userDir);
     console.log(fullDirPath);
@@ -30,9 +22,9 @@ const init = async () => {
     const files = await getMatchingFiles(fullDirPath, ext);
     console.log(files);
 
-    // if (!files.length) {
-    //   console.log('Sorry, files with given extensions not found');
-    // }
+    if (files.length === 0) {
+      console.log('Sorry, files with given extensions not found');
+    }
   } catch (error) {
     console.log('Something goes wrong, please read help and try again');
     console.log(error);

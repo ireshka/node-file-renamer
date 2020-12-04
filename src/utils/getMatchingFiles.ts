@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/indent */
 /* eslint-disable unicorn/no-fn-reference-in-iterator */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import fs = require('fs');
@@ -5,50 +6,24 @@ import path = require('path');
 
 const fsPromise = fs.promises;
 
-// interface IFile {
-//   directory: string;
-//   name: string;
-// }
-
-// const isElementFile = async (file: IFile): Promise<boolean> => {
-//   try {
-//     const { directory, name } = file;
-
-//     const filePath = path.join(directory, name);
-//     const stats = await fsPromise.stat(filePath);
-//     return stats.isFile();
-//   } catch {
-//     return false;
-//   }
-// };
-
-// let fileFilter: IAsyncFilter<IFile> = asyncFilter;
-
-// const getMatchingFiles = async (
-//   directory: string,
-//   extensions: string[],
-// ): Promise<string[]> => {
-//   try {
-//     // get all directory content
-//     // filter only files
-
-//     const filesInDirectory = await fileFilter(
-//       contentWithFullPath,
-//       isElementFile,
-//     );
-//     console.log(directoryContent);
-//     console.log(filesInDirectory);
-
-//     return [];
-//   } catch (error) {
-//     console.log(`Error: ${error}`);
-//     console.log("Sorry, given directory with files for renaming doesn't exist");
-//     process.exit(0);
-//   }
-// };
-
 interface IFilterCallback<E> {
   (element: E): Promise<boolean>;
+}
+
+interface IFilterTwoArgumentsCallback<T, G> {
+  (element: T, argument: G): Promise<boolean>;
+}
+
+interface IAsyncFilter<T> {
+  (array: T[], condition: IFilterCallback<T>): Promise<T[]>;
+}
+
+interface IAsyncFilterWithArgument<T, G> {
+  (
+    array: T[],
+    argument: G,
+    condition: IFilterTwoArgumentsCallback<T, G>,
+  ): Promise<T[]>;
 }
 
 const checkIfFile: IFilterCallback<string> = async (element) => {
@@ -62,19 +37,41 @@ const checkIfFile: IFilterCallback<string> = async (element) => {
   }
 };
 
-interface IAsyncFilter<T> {
-  (array: T[], condition: IFilterCallback<T>): Promise<T[]>;
+interface IGetFilteredByExtensions {
+  (files: string[], exts: string[]): Promise<string[]>;
 }
 
-async function asyncFilter<T>(
-  array: T[],
-  condition: IFilterCallback<T>,
-): Promise<T[]> {
+const checkIfHasExtension: IFilterTwoArgumentsCallback<
+  string,
+  string[]
+> = async (element, arrayOfExtensions) => {
+  try {
+    const extension = path.extname(element);
+    if (arrayOfExtensions.includes(extension)) {
+      return Promise.resolve(true);
+    }
+    return Promise.resolve(false);
+  } catch (error) {
+    console.log('Error occurs during checking files extension');
+    console.log(error);
+    process.exit(0);
+  }
+};
+
+const stringAsyncFilter: IAsyncFilter<string> = async (array, condition) => {
   const results = await Promise.all(array.map(condition));
   return array.filter((_v, index) => results[index]);
-}
+};
 
-const stringAsyncFilter: IAsyncFilter<string> = asyncFilter;
+const stringAsyncFilterWithArgument: IAsyncFilterWithArgument<
+  string,
+  string[]
+> = async (array, argument, condition) => {
+  const results = await Promise.all(
+    array.map((element) => condition(element, argument)),
+  );
+  return array.filter((_v, index) => results[index]);
+};
 
 const getDirectoryContentWithAbsolutePath = async (
   dirPath: string,
@@ -97,16 +94,35 @@ const getFilesFromDirectory = async (
   directoryContent: string[],
 ): Promise<string[]> => {
   const files = await stringAsyncFilter(directoryContent, checkIfFile);
-  console.log(files);
   return files;
 };
 
+const checkUniversalSelector = (arrayOfExtensions: string[]): boolean => {
+  if (arrayOfExtensions.length === 0) {
+    return true;
+  }
+  return false;
+};
+
+const filterMatchingFiles: IGetFilteredByExtensions = async (files, exts) => {
+  const isUniversalSelector = checkUniversalSelector(exts);
+  if (isUniversalSelector) {
+    return files;
+  }
+
+  const filteredElements = await stringAsyncFilterWithArgument(
+    files,
+    exts,
+    checkIfHasExtension,
+  );
+  return filteredElements;
+};
+
 interface IGetMatchingFiles {
-  (dirPath: string, extArray: string[]): Promise<string[] | Error>;
+  (dirPath: string, extArray: string[]): Promise<string[]>;
 }
 
 const getMatchingFiles: IGetMatchingFiles = async (dirPath, extArray) => {
-  // logic here
   try {
     const directoryContentWithAbsolutePath = await getDirectoryContentWithAbsolutePath(
       dirPath,
@@ -115,18 +131,14 @@ const getMatchingFiles: IGetMatchingFiles = async (dirPath, extArray) => {
       console.log('Given directory is empty');
       process.exit(0);
     }
-    console.log(directoryContentWithAbsolutePath);
     const filesInDirectory = await getFilesFromDirectory(
       directoryContentWithAbsolutePath,
     );
-    console.log(filesInDirectory);
-    console.log(dirPath);
-    console.log(extArray);
-    return ['a'];
+    const matchingFiles = await filterMatchingFiles(filesInDirectory, extArray);
+    return matchingFiles;
   } catch (error) {
     console.log(error);
     process.exit(0);
-    // return new Error(error);
   }
 };
 
