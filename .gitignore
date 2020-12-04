@@ -58,3 +58,7 @@ $RECYCLE.BIN/
 
 # Todo Files
 *.todo.md
+
+# Project related
+src/photos
+src/photos1

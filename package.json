@@ -13,6 +13,8 @@
     "check:eslint:deprecated": "eslint-find-rules --deprecated -no-error .eslintrc.js",
     "check:eslint:unused": "eslint-find-rules --unused -no-error .eslintrc.js",
     "test": "jest",
+    "test:correct:noext": "ts-node ./src/index.ts --dir photos",
+    "test:correct:ext": "ts-node ./src/index.ts --dir photos --ext png jpg",
     "version": "babel --version"
   },
   "keywords": [

@@ -4,3 +4,6 @@ This is a Typescript project for practise command-line node scripting and utiliz
 
 **Used libraries:**
 - yargs
+
+**Planned libraries:**
+- signale / chalk for console info for user

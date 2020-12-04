@@ -56,6 +56,7 @@ module.exports = {
     /**
      * @info unicorn rules
      */
+    'unicorn/explicit-length-check': 'off',
     'unicorn/filename-case': 'off',
     'unicorn/import-index': 'off',
     'unicorn/import-style': 'off',
@@ -63,20 +64,18 @@ module.exports = {
     'unicorn/no-reduce': 'off',
     'unicorn/numeric-separators-style': 'off',
     'unicorn/prefer-ternary': 'off',
-    'unicorn/prevent-abbreviations': [
-      'error',
-      {
-        checkFilenames: false,
-        checkProperties: true,
-      },
-    ],
     /**
      * Various rules - project
      */
-    'no-console': 'off',
+    '@typescript-eslint/no-floating-promises': ['error', { ignoreVoid: true } ],
     'import/prefer-default-export': 'off',
+    'no-console': 'off',
+    'no-void': ["error", { "allowAsStatement": true }],
     'node/no-unsupported-features/es-syntax': ['error', { ignores: ['modules'] }],
-    'unicorn/no-process-exit': off,
+    'object-curly-newline': 'off',
+    'unicorn/no-process-exit': 'off',
+    'unicorn/prevent-abbreviations': "off",
+
   },
   settings: {
     node: {
