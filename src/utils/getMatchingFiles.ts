@@ -135,6 +135,13 @@ const getMatchingFiles: IGetMatchingFiles = async (dirPath, extArray) => {
       directoryContentWithAbsolutePath,
     );
     const matchingFiles = await filterMatchingFiles(filesInDirectory, extArray);
+
+    if (!matchingFiles.length) {
+      console.log(
+        `No find files with matching extensions: ${extArray.join(', ')}.`,
+      );
+      process.exit(0);
+    }
     return matchingFiles;
   } catch (error) {
     console.log(error);

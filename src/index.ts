@@ -3,11 +3,14 @@ import { getArguments } from './utils/getArguments';
 import { doesExist } from './utils/doesExist';
 import { getMatchingFiles } from './utils/getMatchingFiles';
 import { createFullDirPath } from './utils/createFullDirPath';
+import { sortFiles } from './utils/sortFiles';
 
 const init = async () => {
   try {
     const { argv } = process;
-    const { userDir, ext, sourcePath, pattern } = getArguments(argv);
+    const { userDir, ext, sourcePath, pattern, order, sort } = getArguments(
+      argv,
+    );
     console.log(ext, pattern);
     const fullDirPath = createFullDirPath(sourcePath, userDir);
     console.log(fullDirPath);
@@ -22,9 +25,8 @@ const init = async () => {
     const files = await getMatchingFiles(fullDirPath, ext);
     console.log(files);
 
-    if (files.length === 0) {
-      console.log('Sorry, files with given extensions not found');
-    }
+    const sortedFiles = sortFiles(files, sort, order);
+    console.log(sortedFiles);
   } catch (error) {
     console.log('Something goes wrong, please read help and try again');
     console.log(error);

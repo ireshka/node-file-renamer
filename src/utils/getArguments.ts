@@ -7,7 +7,9 @@ import { validatePattern } from './validators';
 interface ICommandArguments {
   _: string[];
   ext: string[];
+  order: string;
   pattern: string;
+  sort: string;
   sourcePath: string;
   userDir: string;
 }
@@ -15,24 +17,28 @@ interface ICommandArguments {
 type UserArguments = Omit<ICommandArguments, '_'>;
 
 const options = {
-  d: {
-    alias: 'dir',
+  dir: {
+    alias: 'd',
     demandOption: 'Directory name for files is required',
     describe: 'Directory name with file for rename',
     type: 'string' as 'string',
   },
-  // e needed as command parameter
-  // eslint-disable-next-line unicorn/prevent-abbreviations
-  e: {
-    alias: 'ext',
+  ext: {
+    alias: 'e',
     array: true,
     default: [],
     demandOption: false,
     describe: 'File extensions for rename',
     type: 'array' as 'array',
   },
-  p: {
-    alias: 'pattern',
+  order: {
+    alias: 'o',
+    choices: ['asc', 'desc'],
+    default: 'asc',
+    describe: 'Sort order: asending or descending',
+  },
+  pattern: {
+    alias: 'p',
     coerce: (userPattern: string): string => {
       if (!validatePattern(userPattern)) {
         throw new Error(
@@ -46,23 +52,36 @@ const options = {
     describe: 'Pattern for new file names ex. photo-$$$',
     type: 'string' as 'string',
   },
+  sort: {
+    alias: 's',
+    choices: ['name', 'date'],
+    default: 'name',
+    describe: 'Sort base: date or name',
+  },
 };
 
 const getArguments = (argv: string[]): UserArguments => {
+  const argv1 = yargs(argv.slice(1))
+    .options(options)
+    .locale('en')
+    .usage(appDescription).argv;
+  console.log(argv1);
   const {
     argv: {
-      d: userDir,
-      e: ext,
-      p: pattern,
+      dir: userDir,
+      ext,
+      order,
+      pattern,
+      sort,
       _: [sourcePath],
     },
   } = yargs(argv.slice(1)).options(options).locale('en').usage(appDescription);
 
-  console.log(ext);
-
   const userArguments: UserArguments = {
     ext,
+    order,
     pattern,
+    sort,
     sourcePath,
     userDir,
   };
