@@ -28,7 +28,8 @@ const options = {
     array: true,
     default: [],
     demandOption: false,
-    describe: 'File extensions for rename',
+    describe:
+      "File extensions for renaming separated by space, ex. '.jpg' '.png'",
     type: 'array' as 'array',
   },
   order: {
@@ -61,11 +62,6 @@ const options = {
 };
 
 const getArguments = (argv: string[]): UserArguments => {
-  const argv1 = yargs(argv.slice(1))
-    .options(options)
-    .locale('en')
-    .usage(appDescription).argv;
-  console.log(argv1);
   const {
     argv: {
       dir: userDir,

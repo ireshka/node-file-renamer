@@ -60,5 +60,4 @@ $RECYCLE.BIN/
 *.todo.md
 
 # Project related
-src/photos
-src/photos1
+src/photos*

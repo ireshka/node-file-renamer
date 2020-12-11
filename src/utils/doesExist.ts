@@ -1,4 +1,4 @@
-import fs = require('fs');
+import * as fs from 'fs';
 
 const fsPromise = fs.promises;
 
@@ -6,9 +6,9 @@ const fsPromise = fs.promises;
 const doesExist = async (path: string): Promise<boolean> => {
   try {
     await fsPromise.access(path);
+
     return true;
   } catch {
-    // console.log(error);
     return false;
   }
 };

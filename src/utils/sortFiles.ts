@@ -1,5 +1,5 @@
-import path = require('path');
-import fs = require('fs');
+import * as fs from 'fs';
+import * as path from 'path';
 
 interface ISortFiles {
   (files: string[], sortType: string, orderType: string): string[];
@@ -21,11 +21,13 @@ const sortByNameCallback: ISortCallback = (first, second) => {
 const sortByDateCallback: ISortCallback = (first, second) => {
   const firstStat = fs.statSync(first);
   const secondStat = fs.statSync(second);
+
   return firstStat.birthtime.getTime() - secondStat.birthtime.getTime();
 };
 
 const setCallback = (sortType: string): ISortCallback => {
   if (sortType === 'date') return sortByDateCallback;
+
   return sortByNameCallback;
 };
 
@@ -34,6 +36,7 @@ const sortFiles: ISortFiles = (files, sortType, orderType) => {
     const usedCallback = setCallback(sortType);
     const sortedFiles = [...files].sort(usedCallback);
     if (orderType === 'desc') sortedFiles.reverse();
+
     return sortedFiles;
   } catch {
     console.log(
