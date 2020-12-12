@@ -1,6 +1,7 @@
 import * as fs from 'fs';
 import * as path from 'path';
 import { leadZero } from './leadZero';
+import { errorAndExit, logInfo } from './logger';
 
 const fsPromise = fs.promises;
 
@@ -27,7 +28,7 @@ interface IRenameFile {
 }
 
 interface IRenameFiles {
-  (files: string[], pattern: string): Promise<boolean>;
+  (files: string[], pattern: string): Promise<boolean> | never;
 }
 
 const getNewFilename: IGetNewFilename = (
@@ -66,8 +67,7 @@ const renameFile: IRenameFile = async (
 
     return true;
   } catch {
-    console.log('Error from changing filename');
-
+    logInfo('Error from changing filename');
     return false;
   }
 };
@@ -86,15 +86,10 @@ const renameFiles: IRenameFiles = async (files, pattern) => {
       const isRenamed = await renameFile(file, index, patternConfigObject);
       return isRenamed && acc;
     }, Promise.resolve(true));
-
     return result;
   } catch (error) {
-    console.log('Error during file renaming.');
-    console.log(error);
-
-    process.exit(0);
+    return errorAndExit('Error during file renaming', error);
   }
-  // return result;
 };
 
 export { renameFiles };

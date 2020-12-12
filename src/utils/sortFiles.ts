@@ -1,5 +1,6 @@
 import * as fs from 'fs';
 import * as path from 'path';
+import { errorAndExit } from './logger';
 
 interface ISortFiles {
   (files: string[], sortType: string, orderType: string): string[];
@@ -38,11 +39,11 @@ const sortFiles: ISortFiles = (files, sortType, orderType) => {
     if (orderType === 'desc') sortedFiles.reverse();
 
     return sortedFiles;
-  } catch {
-    console.log(
+  } catch (error) {
+    return errorAndExit(
       'Something wrong during sorting files. Please check files and try again',
+      error,
     );
-    process.exit(0);
   }
 };
 

@@ -3,6 +3,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import * as fs from 'fs';
 import * as path from 'path';
+import { errorAndExit, infoAndExit } from './logger';
 
 const fsPromise = fs.promises;
 
@@ -40,10 +41,10 @@ const checkIfFile: IFilterCallback<string> = async (element) => {
 
     return stats.isFile();
   } catch (error) {
-    console.log('Error occurs during checking files in directory');
-    console.log(error);
-
-    process.exit(0);
+    return errorAndExit(
+      'Error occurs during checking files in directory',
+      error,
+    );
   }
 };
 
@@ -59,10 +60,7 @@ const checkIfHasExtension: IFilterTwoArgumentsCallback<
 
     return Promise.resolve(false);
   } catch (error) {
-    console.log('Error occurs during checking files extension');
-    console.log(error);
-
-    process.exit(0);
+    return errorAndExit('Error occurs during checking files extension', error);
   }
 };
 
@@ -95,10 +93,10 @@ const getDirectoryContentWithAbsolutePath = async (
 
     return directoryContentWithAbsolutePath;
   } catch (error) {
-    console.log('Error occurs during reading content of directory');
-    console.log(error);
-
-    process.exit(0);
+    return errorAndExit(
+      'Error occurs during reading content of directory',
+      error,
+    );
   }
 };
 
@@ -140,8 +138,7 @@ const getMatchingFiles: IGetMatchingFiles = async (dirPath, extArray) => {
     );
 
     if (!directoryContentWithAbsolutePath.length) {
-      console.log('Given directory is empty');
-      process.exit(0);
+      infoAndExit('Given directory is empty');
     }
 
     const filesInDirectory = await getFilesFromDirectory(
@@ -151,17 +148,14 @@ const getMatchingFiles: IGetMatchingFiles = async (dirPath, extArray) => {
     const matchingFiles = await filterMatchingFiles(filesInDirectory, extArray);
 
     if (!matchingFiles.length) {
-      console.log(
+      infoAndExit(
         `No find files with matching extensions: ${extArray.join(', ')}.`,
       );
-      process.exit(0);
     }
 
     return matchingFiles;
   } catch (error) {
-    console.log(error);
-
-    process.exit(0);
+    return errorAndExit('Error during checking matching files', error);
   }
 };
 
