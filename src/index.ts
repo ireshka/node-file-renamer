@@ -8,6 +8,7 @@ import { errorAndExit, infoAndExit } from './utils/logger';
 
 const init = async () => {
   try {
+    // throw new Error('error test');
     const { argv } = process;
     const { userDir, ext, sourcePath, pattern, order, sort } = getArguments(
       argv,
@@ -23,7 +24,7 @@ const init = async () => {
 
     const files = await getMatchingFiles(fullDirPath, ext);
 
-    const sortedFiles = sortFiles(files, sort, order) as string[];
+    const sortedFiles = sortFiles(files, sort, order);
 
     const result = await renameFiles(sortedFiles, pattern);
 
